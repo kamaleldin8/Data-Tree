@@ -161,19 +161,24 @@ export default {
     },
     disable(id) {
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      this.disabled = !this.disabled;
-      let selectednode = document.querySelectorAll(".node_node")[id];
+      // console.log(id)
+      // console.log(this.flagColor);
 
+      this.disabled = !this.disabled;
+      let selectednode = document.getElementById(id);
+
+      console.log(selectednode);
       this.flagColor
         ? (selectednode.style.backgroundColor = "transparent")
         : (selectednode.style.backgroundColor = "lightgrey");
       this.flagColor = !this.flagColor;
-
-      let catchedBtn = document.getElementsByClassName("p-link")[id];
-      this.expansionIcon
-        ? (catchedBtn.style.opacity = "1")
-        : (catchedBtn.style.opacity = "0");
-      this.expansionIcon = !this.expansionIcon;
+     console.log(this.flagColor);
+     
+      // let catchedBtn = document.getElementsByClassName("p-link")[id];
+      // this.expansionIcon
+      //   ? (catchedBtn.style.opacity = "1")
+      //   : (catchedBtn.style.opacity = "0");
+      // this.expansionIcon = !this.expansionIcon;
 
       //   this.selectionKeys === false;
       //   this.selectionKeys['type']
@@ -192,10 +197,8 @@ export default {
     },
     onClick(event) {
       if (!this.disabled) {
-        if (
-          DomHandler.hasClass(event.target, "p-tree-toggler") ||
-          DomHandler.hasClass(event.target.parentElement, "p-tree-toggler")
-        ) {
+        if (DomHandler.hasClass(event.target, "p-tree-toggler") ||DomHandler.hasClass(event.target.parentElement, "p-tree-toggler")) 
+        {
           return;
         }
 
@@ -218,9 +221,9 @@ export default {
         let catchedDiv = document.querySelectorAll(".p-treenode-content")[
           event.target.id
         ];
-        catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem yellow";
+        catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
         // console.log(catchedDiv);
-        this.disabled =!this.disabled
+        // this.disabled =!this.disabled
       }
     },
     onChildNodeClick(event) {

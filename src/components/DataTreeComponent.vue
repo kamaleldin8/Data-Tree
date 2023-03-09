@@ -66,7 +66,7 @@ export default {
 
         <Tree
           :value="nodes"
-          selectionMode="multiple"
+          selectionMode="single"
           v-model:selectionKeys="selectedKeys3"
           v-model:expandedKeys="expandedKeys"
           scrollHeight="200px"
