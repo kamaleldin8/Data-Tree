@@ -662,7 +662,7 @@ span.icons {
   top: 1em;
 }
 .p-highlight {
-  box-shadow: inset 0 0 0 0.15rem rgb(141, 161, 187) !important;
+  box-shadow: inset 0 0 0 0.15rem #d0e1fd !important;
 
 }
 </style>
