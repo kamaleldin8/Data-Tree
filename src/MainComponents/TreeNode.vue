@@ -152,28 +152,23 @@ export default {
     }
   },
   methods: {
-    selectedDiv(id) {
-      let selectedLi = document.querySelectorAll(".node_node")[id];
-      //   for (let i = 0; i < selectedLi.length; i++) {
-      //   console.log(selectedLi);
-      selectedLi.style.border = "1px solid transparent";
-      //   }
-    },
     disable(id) {
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      // console.log(id)
-      // console.log(this.flagColor);
 
       this.disabled = !this.disabled;
       let selectednode = document.getElementById(id);
 
-      console.log(selectednode);
+      // console.log(selectednode);
       this.flagColor
         ? (selectednode.style.backgroundColor = "transparent")
         : (selectednode.style.backgroundColor = "lightgrey");
       this.flagColor = !this.flagColor;
-     console.log(this.flagColor);
-     
+
+      let catchedDiv = document.querySelectorAll(".p-treenode-content")[id];
+        console.log(catchedDiv);
+        catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
+      // console.log(this.flagColor);
+
       // let catchedBtn = document.getElementsByClassName("p-link")[id];
       // this.expansionIcon
       //   ? (catchedBtn.style.opacity = "1")
@@ -197,8 +192,10 @@ export default {
     },
     onClick(event) {
       if (!this.disabled) {
-        if (DomHandler.hasClass(event.target, "p-tree-toggler") ||DomHandler.hasClass(event.target.parentElement, "p-tree-toggler")) 
-        {
+        if (
+          DomHandler.hasClass(event.target, "p-tree-toggler") ||
+          DomHandler.hasClass(event.target.parentElement, "p-tree-toggler")
+        ) {
           return;
         }
 
@@ -212,15 +209,17 @@ export default {
           });
         }
         this.nodeTouched = false;
+        let catchedDiv = document.querySelectorAll(".p-treenode-content")[event.target.id];
+        console.log(catchedDiv);
+        // catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem green";
         // this.disabled = true;
       }
       if (this.disabled) {
         console.log("else");
         // console.log(event.target.id);
         // console.log(id);
-        let catchedDiv = document.querySelectorAll(".p-treenode-content")[
-          event.target.id
-        ];
+        let catchedDiv = document.querySelectorAll(".p-treenode-content")[event.target.id];
+        console.log(catchedDiv);
         catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
         // console.log(catchedDiv);
         // this.disabled =!this.disabled
@@ -557,9 +556,13 @@ export default {
         : this.selectionMode != null;
     },
     selected() {
+      if(!this.disabled){
       return this.selectionMode && this.selectionKeys
         ? this.selectionKeys[this.node.key] === true
-        : false;
+        : false;}
+        else{return false}
+
+        
     },
     containerClass() {
       return ["p-treenode", { "p-treenode-leaf": this.leaf }];
@@ -638,10 +641,10 @@ export default {
 span.icons {
   margin-left: auto;
 }
-.p-tree .p-tree-container .p-treenode .p-treenode-content.p-highlight {
+.p-tree .p-tree-container .p-treenode .p-treenode-content{
   background-color: transparent;
   color: black !important;
-  box-shadow: inset 0 0 0 0.15rem green;
+  /* box-shadow: inset 0 0 0 0.15rem green; */
 }
 .p-tree .p-tree-container .p-treenode:focus > .p-treenode-content {
   /* box-shadow: inset 0 0 0 0.15rem red; */
@@ -657,5 +660,9 @@ span.icons {
   z-index: 20;
   right: 2em;
   top: 1em;
+}
+.p-highlight {
+  box-shadow: inset 0 0 0 0.15rem rgb(141, 161, 187) !important;
+
 }
 </style>
