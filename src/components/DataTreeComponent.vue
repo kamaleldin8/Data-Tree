@@ -82,10 +82,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-html {
-  font-size: 14px;
-}
-
+/* .grid {
+  position: relative;
+}  */
 body {
   background-color: var(--surface-ground);
   font-family: var(--font-family);
@@ -95,6 +94,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   padding: 0.5em;
   margin-bottom: 50px;
+  font-size: 14px;
 }
 
 h1,

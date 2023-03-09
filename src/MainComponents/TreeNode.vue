@@ -58,9 +58,8 @@
         <template v-else>{{ label(node) }}</template>
       </span>
     </div>
-<!-- //////////////////////////////////////////////////////////////////////////////////////CHECK DESCRIPTION///////////////////////////////////////////////////////////////// -->
+    <!-- //////////////////////////////////////////////////////////////////////////////////////CHECK DESCRIPTION///////////////////////////////////////////////////////////////// -->
     <!-- <h1>{{ node.description }}</h1> -->
-
 
     <span class="icons flex">
       <Button class="px-2 bg-transparent border-0" :disabled="disabled">
@@ -78,12 +77,9 @@
       >
         <i class="pi pi-power-off"></i>
       </button>
-      <button class="px-2 bg-transparent border-none  tooltip">
-        
-        <i class="pi pi-info-circle"></i> <span class="tooltiptext">{{node.description}}</span>
-      </button>
-
-
+        <b-button v-b-tooltip.hover :title="node.description" variant="otline-success" >
+          <i class="pi pi-info-circle"></i>
+        </b-button>
     </span>
     <ul
       v-if="hasChildren && expanded && !disabled"
@@ -687,9 +683,6 @@ span.icons {
   box-shadow: inset 0 0 0 0.15rem #d0e1fd !important;
 }
 
-
-
-
 .tooltip {
   position: relative;
   display: inline-block;
@@ -722,6 +715,4 @@ span.icons {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
-
-
 </style>
