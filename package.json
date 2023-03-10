@@ -13,6 +13,7 @@
     "bootstrap-icons": "^1.10.3",
     "core-js": "^3.8.3",
     "draggable": "^4.2.0",
+    "font-awesome": "^4.7.0",
     "npm-watch": "^0.11.0",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",

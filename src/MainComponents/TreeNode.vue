@@ -58,6 +58,10 @@
         <template v-else>{{ label(node) }}</template>
       </span>
     </div>
+<!-- //////////////////////////////////////////////////////////////////////////////////////CHECK DESCRIPTION///////////////////////////////////////////////////////////////// -->
+    <!-- <h1>{{ node.description }}</h1> -->
+
+
     <span class="icons flex">
       <Button class="px-2 bg-transparent border-0" :disabled="disabled">
         <i class="pi pi-plus-circle"></i
@@ -68,9 +72,18 @@
       <button class="px-2 bg-transparent border-0" :disabled="disabled">
         <i class="pi pi-trash"></i>
       </button>
-      <button @click="disable(node.key)" class="px-2 bg-transparent border-0">
+      <button
+        @click="disable(node.key, node.status)"
+        class="px-2 bg-transparent border-0"
+      >
         <i class="pi pi-power-off"></i>
       </button>
+      <button class="px-2 bg-transparent border-none  tooltip">
+        
+        <i class="pi pi-info-circle"></i> <span class="tooltiptext">{{node.description}}</span>
+      </button>
+
+
     </span>
     <ul
       v-if="hasChildren && expanded && !disabled"
@@ -152,35 +165,40 @@ export default {
     }
   },
   methods: {
-    disable(id) {
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //     checkStatus(status){
+    // if (status==='disabled'){
+    //   console.log("skjajkdcaksdckddklckldc")
+    // }
+    //     },
+    hideExpansionBtn(id) {
+      let catchedBtn = document.getElementsByClassName("p-link")[id];
+      this.expansionIcon
+        ? (catchedBtn.style.opacity = "1")
+        : (catchedBtn.style.opacity = "0");
 
+      let catchedDiv = document.querySelectorAll(".p-treenode-content")[id];
+      console.log(catchedDiv);
+      catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
+      this.expansionIcon = !this.expansionIcon;
+    },
+    disable(id, status) {
+      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      console.log(status);
       this.disabled = !this.disabled;
       let selectednode = document.getElementById(id);
 
-      // console.log(selectednode);
       this.flagColor
         ? (selectednode.style.backgroundColor = "transparent")
         : (selectednode.style.backgroundColor = "lightgrey");
       this.flagColor = !this.flagColor;
 
       let catchedDiv = document.querySelectorAll(".p-treenode-content")[id];
-        console.log(catchedDiv);
-        catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
-      // console.log(this.flagColor);
+      console.log(catchedDiv);
+      catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
 
-      // let catchedBtn = document.getElementsByClassName("p-link")[id];
-      // this.expansionIcon
-      //   ? (catchedBtn.style.opacity = "1")
-      //   : (catchedBtn.style.opacity = "0");
-      // this.expansionIcon = !this.expansionIcon;
-
-      //   this.selectionKeys === false;
-      //   this.selectionKeys['type']
-      //   console.log(Object.entries(this.selectionKeys));
-      //   for()
-      //   this.selectionKeys =! this.selectionKeys;
+      // this.hideExpansionBtn(id);
     },
+
     toggle() {
       this.$emit("node-toggle", this.node);
     },
@@ -209,7 +227,9 @@ export default {
           });
         }
         this.nodeTouched = false;
-        let catchedDiv = document.querySelectorAll(".p-treenode-content")[event.target.id];
+        let catchedDiv = document.querySelectorAll(".p-treenode-content")[
+          event.target.id
+        ];
         console.log(catchedDiv);
         // catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem green";
         // this.disabled = true;
@@ -218,7 +238,9 @@ export default {
         console.log("else");
         // console.log(event.target.id);
         // console.log(id);
-        let catchedDiv = document.querySelectorAll(".p-treenode-content")[event.target.id];
+        let catchedDiv = document.querySelectorAll(".p-treenode-content")[
+          event.target.id
+        ];
         console.log(catchedDiv);
         catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
         // console.log(catchedDiv);
@@ -556,13 +578,13 @@ export default {
         : this.selectionMode != null;
     },
     selected() {
-      if(!this.disabled){
-      return this.selectionMode && this.selectionKeys
-        ? this.selectionKeys[this.node.key] === true
-        : false;}
-        else{return false}
-
-        
+      if (!this.disabled) {
+        return this.selectionMode && this.selectionKeys
+          ? this.selectionKeys[this.node.key] === true
+          : false;
+      } else {
+        return false;
+      }
     },
     containerClass() {
       return ["p-treenode", { "p-treenode-leaf": this.leaf }];
@@ -641,7 +663,7 @@ export default {
 span.icons {
   margin-left: auto;
 }
-.p-tree .p-tree-container .p-treenode .p-treenode-content{
+.p-tree .p-tree-container .p-treenode .p-treenode-content {
   background-color: transparent;
   color: black !important;
   /* box-shadow: inset 0 0 0 0.15rem green; */
@@ -663,6 +685,43 @@ span.icons {
 }
 .p-highlight {
   box-shadow: inset 0 0 0 0.15rem #d0e1fd !important;
-
 }
+
+
+
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 110%;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+
 </style>

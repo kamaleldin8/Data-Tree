@@ -4,7 +4,6 @@ import Tree from "../MainComponents/Tree.vue";
 import "primeflex/primeflex.css";
 import "primevue/resources/themes/lara-light-blue/theme.css";
 import "primeicons/primeicons.css";
-
 export default {
   data() {
     return {
@@ -12,8 +11,8 @@ export default {
       selectedKeys3: null,
       expandedKeys: {},
     };
-  },
-
+  }
+,
   props: {},
   components: {
     Tree,
@@ -42,6 +41,7 @@ export default {
 </script>
 
 <template>
+
   <div class="grid">
     <div class="col-12">
       <div class="card">
@@ -81,6 +81,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 html {
   font-size: 14px;
 }
