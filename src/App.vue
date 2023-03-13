@@ -1,4 +1,7 @@
 <template>
+    <keep-alive>
+    <component :is="DataTreeComponent" />
+  </keep-alive>
 <DataTreeComponent></DataTreeComponent>
 </template>
 

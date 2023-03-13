@@ -258,29 +258,59 @@ export default {
     onFilterKeydown(event) {
       if (event.which === 13) {
         event.preventDefault();
-      }
+      } 
     },
     findFilteredNodes(node, paramsWithoutNode) {
       if (node) {
         let matched = false;
+        // console.log("llllllllllllllllllllllllll");  
+        // console.log(node);
 
         if (node.children) {
-          let childNodes = [...node.children];
 
-          node.children = [];
+          let childNodes = [...node.children];
+          console.log(node.children);
+           node.children = [];
+       
 
           for (let childNode of childNodes) {
             let copyChildNode = { ...childNode };
+            console.log("childNode");
+            console.log(childNode);
+            console.log("copyChildNode");
+            console.log(copyChildNode);
+
 
             if (this.isFilterMatched(copyChildNode, paramsWithoutNode)) {
               matched = true;
-              node.children.push(copyChildNode);
-              // console.log("the node "+node['label']);
+              // console.log("***************************************");
+              // console.log(node);
+              // console.log(copyChildNode);
+
+               node.children.push(copyChildNode)
+              //  console.log("pushed node")
+              // console.log(node.children);
+              //  node = node.children[0]
+              //  node.children = [];
+              //   console.log("before");
+              // console.log(node.children)
+
+              //  node.label=copyChildNode['label'];
+              //  node.children = [];
+               //we need to push the right children
+               
+              //  console.log("after");
+
+              //  console.log(node.children)
+
+              // console.log(copyChildNode['label']);
+
+//////////////////////////////////////////////////////////////////////// NADA //////////////////////////////////////////////////////////////////////
             }
           }
         }
 
-        if (matched) {
+        if (matched) { 
           return true;
         }
       }
@@ -333,6 +363,7 @@ export default {
         let _node = { ...node };
         let paramsWithoutNode = { searchFields, filterText, strict };
 
+      
         if (
           (strict &&
             (this.findFilteredNodes(_node, paramsWithoutNode) ||
@@ -342,6 +373,8 @@ export default {
               this.findFilteredNodes(_node, paramsWithoutNode)))
         ) {
           filteredNodes.push(_node);
+          //console.log(filteredNodes[0].children)
+          
         }
       }
 
@@ -350,6 +383,7 @@ export default {
     valueToRender() {
       if (this.filterValue && this.filterValue.trim().length > 0)
         return this.filteredValue;
+      
       else return this.value;
     },
   },

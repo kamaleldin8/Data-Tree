@@ -17,7 +17,8 @@
     <div
       :id="node.key"
       class="node_node"
-      :class="contentClass"
+      :class="[contentClass, node.status === 'disabled' ? 'disable-Node' : '']"
+      :status="node.status"
       @click="onClick"
       @touchend="onTouchEnd"
       :style="node.style"
@@ -51,28 +52,36 @@
         <template v-else>{{ label(node) }}</template>
       </span>
     </div>
-    <!-- //////////////////////////////////////////////////////////////////////////////////////CHECK DESCRIPTION///////////////////////////////////////////////////////////////// -->
-    <!-- <h1>{{ node.description }}</h1> -->
 
     <span class="icons flex">
-      <Button class="px-2 bg-transparent border-0" :disabled="disabled">
+      <Button
+        class="px-2 bg-transparent border-0"
+        :disabled="node.status === 'disabled'"
+      >
         <i class="pi pi-plus-circle"></i
       ></Button>
-      <button class="px-2 bg-transparent border-0" :disabled="disabled">
+      <button
+        class="px-2 bg-transparent border-0"
+        :disabled="node.status === 'disabled'"
+      >
         <i class="pi pi-pencil"></i>
       </button>
-      <button class="px-2 bg-transparent border-0" :disabled="disabled">
+      <button
+        class="px-2 bg-transparent border-0"
+        :disabled="node.status === 'disabled'"
+      >
         <i class="pi pi-trash"></i>
       </button>
-      <button
-        @click="disable(node.key, node.status)"
-        class="px-2 bg-transparent border-0"
-      >
+      <button @click="disable(node)" class="px-2 bg-transparent border-0">
         <i class="pi pi-power-off"></i>
       </button>
-        <b-button v-b-tooltip.hover :title="node.description" variant="otline-success" >
-          <i class="pi pi-info-circle"></i>
-        </b-button>
+      <b-button
+        v-b-tooltip.hover
+        :title="node.description"
+        variant="otline-success"
+      >
+        <i class="pl-3 pi pi-info-circle"></i>
+      </b-button>
     </span>
     <ul
       v-if="(hasChildren && expanded && !disabled) || !hasChildren"
@@ -100,7 +109,7 @@
 </template>
 
 <script>
-// import { objectExpression } from "@babel/types";
+// import { stat } from "fs";
 import Ripple from "primevue/ripple";
 import { DomHandler } from "primevue/utils";
 import draggable from "vuedraggable";
@@ -162,11 +171,6 @@ export default {
     }
   },
   methods: {
-    //     checkStatus(status){
-    // if (status==='disabled'){
-    //   console.log("skjajkdcaksdckddklckldc")
-    // }
-    //     },
     hideExpansionBtn(id) {
       let catchedBtn = document.getElementsByClassName("p-link")[id];
       this.expansionIcon
@@ -178,22 +182,39 @@ export default {
       catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
       this.expansionIcon = !this.expansionIcon;
     },
-    disable(id, status) {
-      ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      console.log(status);
-      this.disabled = !this.disabled;
-      let selectednode = document.getElementById(id);
+    
+    disable(node) {
+   
+      if (node.status === "disabled") {
+      node.status="enabled"
+      } else {
+        node.status = "disabled";
+        console.log(node.key.length);
+        // if (node.key.length === 1) {
+          for (let i = 0; i < node.children.length; i++) {
+           
+              for(let i = 0; i < node.children.length; i++){
+                for(let i = 0; i < node.children.length; i++){
+                node.children[i].status='disabled'
+              }              }
+            
+            // console.log("hello");
+            // node.children[i].status='disabled'
+          }
+          // node.children.status = "disabled";
+          // console.log(node.children);
+        // }
 
-      this.flagColor
-        ? (selectednode.style.backgroundColor = "transparent")
-        : (selectednode.style.backgroundColor = "lightgrey");
-      this.flagColor = !this.flagColor;
+      // lw howa parent=> disable children kolhom
+      }
+      // this.disabled = !this.disabled;
+      //         let selectednode = document.getElementById(id);
 
-      let catchedDiv = document.querySelectorAll(".p-treenode-content")[id];
-      console.log(catchedDiv);
-      catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
-
-      // this.hideExpansionBtn(id);
+      // this.flagColor
+      //   ? (selectednode.style.backgroundColor = "transparent")
+      //   : (selectednode.style.backgroundColor = "lightgrey");
+      // this.flagColor = !this.flagColor;
+      // selectednode.style.boxShadow = "inset 0 0 0 0.15rem transparent";
     },
 
     toggle() {
@@ -206,7 +227,7 @@ export default {
       this.$emit("node-toggle", node);
     },
     onClick(event) {
-      if (!this.disabled) {
+      if (this.node.status === "enabled") {
         if (
           DomHandler.hasClass(event.target, "p-tree-toggler") ||
           DomHandler.hasClass(event.target.parentElement, "p-tree-toggler")
@@ -224,24 +245,14 @@ export default {
           });
         }
         this.nodeTouched = false;
-        let catchedDiv = document.querySelectorAll(".p-treenode-content")[
-          event.target.id
-        ];
-        console.log(catchedDiv);
-        // catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem green";
-        // this.disabled = true;
       }
-      if (this.disabled) {
-        console.log("else");
+      if (this.node.status === "disabled") {
+        let catchedDiv = document.getElementById(event.target.id);
+        catchedDiv.classList.add("disable-Node");
+        // console.log("else");
         // console.log(event.target.id);
-        // console.log(id);
-        let catchedDiv = document.querySelectorAll(".p-treenode-content")[
-          event.target.id
-        ];
-        console.log(catchedDiv);
-        catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
         // console.log(catchedDiv);
-        // this.disabled =!this.disabled
+        // catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
       }
     },
     onChildNodeClick(event) {
@@ -575,7 +586,7 @@ export default {
         : this.selectionMode != null;
     },
     selected() {
-      if (!this.disabled) {
+      if (this.node.status === "enabled") {
         return this.selectionMode && this.selectionKeys
           ? this.selectionKeys[this.node.key] === true
           : false;
@@ -602,7 +613,7 @@ export default {
     toggleIcon() {
       return [
         "p-tree-toggler-icon pi pi-fw",
-        this.expanded && !this.disabled
+        this.expanded 
           ? this.node.expandedIcon || "pi-chevron-down"
           : this.node.collapsedIcon || "pi-chevron-right",
       ];
@@ -715,5 +726,10 @@ span.icons {
 }
 .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+.disable-Node {
+  background-color: lightgrey !important;
+  box-shadow: inset 0 0 0 0.15rem transparent !important;
 }
 </style>
