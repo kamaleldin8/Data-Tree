@@ -46,6 +46,8 @@ export default {
 
         <div class="flex flex-wrap gap-2 mb-4 justify-content-center">
           <Button
+          class="transition-colors transition-duration-500 bg-blue-500 hover:bg-gray-200 text-white hover:text-gray-900
+    flex align-items-center justify-content-center border-none font-bold border-round cursor-pointer m-2 w-2 py-3"
             type="button"
             icon="pi pi-plus"
             label="Expand All"
@@ -57,6 +59,8 @@ export default {
             </Button
           >
           <Button
+          class="transition-colors transition-duration-500 bg-blue-500 hover:bg-gray-200 text-white hover:text-gray-900
+    flex align-items-center justify-content-center border-none font-bold border-round cursor-pointer m-2 w-2 py-3"
             type="button"
             icon="pi pi-minus"
             label="Collapse All"
