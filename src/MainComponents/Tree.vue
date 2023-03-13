@@ -16,18 +16,20 @@
       />
       <span class="p-tree-filter-icon pi pi-search"></span>
     </div>
-    <div class="p-tree-wrapper" :style="{ maxHeight: scrollHeight }">
+    <div class="p-tree-wrapper" :style="{ minHeight: scrollHeight }">
       <ul
         class="p-tree-container"
         role="tree"
         :aria-labelledby="ariaLabelledby"
         :aria-label="ariaLabel"
       >
-        <TreeNode
-          v-for="(node, index) of valueToRender"
+      <draggable :list="valueToRender" group="people" item-key="key">
+        
+        <template #item="{ element, index }">
+          <TreeNode 
           :valuetorender="valueToRender"
-          :key="node.key"
-          :node="node"
+          :key="element.key"
+          :node="element"
           :templates="$slots"
           :level="level + 1"
           :index="index"
@@ -38,6 +40,8 @@
           :selectionKeys="selectionKeys"
           @checkbox-change="onCheckboxChange"
         ></TreeNode>
+        </template>
+      </draggable>
       </ul>
     </div>
   </div>
@@ -46,6 +50,8 @@
 <script>
 import { ObjectUtils } from "primevue/utils";
 import TreeNode from "./TreeNode.vue";
+import draggable from "vuedraggable";
+
 
 export default {
   name: "Tree",
@@ -349,6 +355,7 @@ export default {
   },
   components: {
     TreeNode: TreeNode,
+    draggable
   },
 };
 </script>

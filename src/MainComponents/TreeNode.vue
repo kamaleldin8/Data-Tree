@@ -1,11 +1,4 @@
 <template>
-  <!-- <draggable
-    class="node"
-    tag="ul"
-    :list="valuetorender"
-    :group="{ name: 'g1' }"
-    item-key="label"
-  > -->
   <li
     ref="currentNode"
     :class="containerClass"
@@ -82,23 +75,26 @@
         </b-button>
     </span>
     <ul
-      v-if="hasChildren && expanded && !disabled"
+      v-if="(hasChildren && expanded && !disabled) || !hasChildren"
       class="p-treenode-children"
       role="group"
     >
-      <TreeNode
-        v-for="childNode of node.children"
-        :key="childNode.key"
-        :node="childNode"
-        :templates="templates"
-        :level="level + 1"
-        :expandedKeys="expandedKeys"
-        @node-toggle="onChildNodeToggle"
-        @node-click="onChildNodeClick"
-        :selectionMode="selectionMode"
-        :selectionKeys="selectionKeys"
-        @checkbox-change="propagateUp"
-      />
+    <draggable :list="node.children" group="people" item-key="key">
+        <template #item="{ element }">
+          <TreeNode
+            :key="element.key"
+            :node="element"
+            :templates="templates"
+            :level="level + 1"
+            :expandedKeys="expandedKeys"
+            @node-toggle="onChildNodeToggle"
+            @node-click="onChildNodeClick"
+            :selectionMode="selectionMode"
+            :selectionKeys="selectionKeys"
+            @checkbox-change="propagateUp"
+          />
+        </template>
+      </draggable>
     </ul>
   </li>
 </template>
@@ -107,6 +103,8 @@
 // import { objectExpression } from "@babel/types";
 import Ripple from "primevue/ripple";
 import { DomHandler } from "primevue/utils";
+import draggable from "vuedraggable";
+
 
 export default {
   name: "TreeNode",
@@ -140,6 +138,9 @@ export default {
       type: Number,
       default: null,
     },
+  },
+  components: {
+    draggable
   },
   nodeTouched: false,
   data() {
