@@ -1,9 +1,6 @@
 <script>
 import data from "./data.json";
 import Tree from "../MainComponents/Tree.vue";
-import "primeflex/primeflex.css";
-import "primevue/resources/themes/lara-light-blue/theme.css";
-import "primeicons/primeicons.css";
 export default {
   data() {
     return {
@@ -47,15 +44,19 @@ export default {
       <div class="card">
         <h2>Tree</h2>
 
-        <div class="flex justify-content-center p-3 ">
+        <div class="flex flex-wrap gap-2 mb-4 justify-content-center">
           <Button
           class="transition-colors transition-duration-500 bg-blue-500 hover:bg-gray-200 text-white hover:text-gray-900
     flex align-items-center justify-content-center border-none font-bold border-round cursor-pointer m-2 w-2 py-3"
             type="button"
             icon="pi pi-plus"
             label="Expand All"
+            class="p-button p-component"
             @click="expandAll"
-            >expand All</Button
+            >
+            <span class="pi pi-plus p-button-icon p-button-icon-left"></span>
+            <span class="p-button-label">Expand All</span>
+            </Button
           >
           <Button
           class="transition-colors transition-duration-500 bg-blue-500 hover:bg-gray-200 text-white hover:text-gray-900
@@ -63,8 +64,10 @@ export default {
             type="button"
             icon="pi pi-minus"
             label="Collapse All"
+            class="p-button p-component"
             @click="collapseAll"
-            >Collapse all</Button
+            ><span class="pi pi-minus p-button-icon p-button-icon-left"></span>
+            <span class="p-button-label">Collapse All</span></Button
           >
         </div>
 
