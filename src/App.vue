@@ -22,4 +22,12 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+.ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+
+.flip-list-move {
+  transition: transform 0.5s;
+}
 </style>

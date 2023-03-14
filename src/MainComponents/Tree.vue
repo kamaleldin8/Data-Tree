@@ -23,26 +23,32 @@
         :aria-labelledby="ariaLabelledby"
         :aria-label="ariaLabel"
       >
-      <draggable :list="valueToRender" group="documents" item-key="key" handle=".draggable">
-        
-        <template #item="{ element, index }">
-          <TreeNode 
-          :nodeParent="false"
-          :valuetorender="valueToRender"
-          :key="element.key"
-          :node="element"
-          :templates="$slots"
-          :level="level + 1"
-          :index="index"
-          :expandedKeys="d_expandedKeys"
-          @node-toggle="onNodeToggle"
-          @node-click="onNodeClick"
-          :selectionMode="selectionMode"
-          :selectionKeys="selectionKeys"
-          @checkbox-change="onCheckboxChange"
-        ></TreeNode>
-        </template>
-      </draggable>
+        <draggable
+          :list="valueToRender"
+          group="documents"
+          item-key="key"
+          handle=".draggable"
+          v-bind="dragOptions"
+        >
+          <template #item="{ element, index }">
+            <TreeNode
+              :dragOptions="dragOptions"
+              :nodeParent="false"
+              :valuetorender="valueToRender"
+              :key="element.key"
+              :node="element"
+              :templates="$slots"
+              :level="level + 1"
+              :index="index"
+              :expandedKeys="d_expandedKeys"
+              @node-toggle="onNodeToggle"
+              @node-click="onNodeClick"
+              :selectionMode="selectionMode"
+              :selectionKeys="selectionKeys"
+              @checkbox-change="onCheckboxChange"
+            ></TreeNode>
+          </template>
+        </draggable>
       </ul>
     </div>
   </div>
@@ -52,7 +58,6 @@
 import { ObjectUtils } from "primevue/utils";
 import TreeNode from "./TreeNode.vue";
 import draggable from "vuedraggable";
-
 
 export default {
   name: "Tree",
@@ -259,20 +264,18 @@ export default {
     onFilterKeydown(event) {
       if (event.which === 13) {
         event.preventDefault();
-      } 
+      }
     },
     findFilteredNodes(node, paramsWithoutNode) {
       if (node) {
         let matched = false;
-        // console.log("llllllllllllllllllllllllll");  
+        // console.log("llllllllllllllllllllllllll");
         // console.log(node);
 
         if (node.children) {
-
           let childNodes = [...node.children];
           console.log(node.children);
-           node.children = [];
-       
+          node.children = [];
 
           for (let childNode of childNodes) {
             let copyChildNode = { ...childNode };
@@ -281,14 +284,13 @@ export default {
             console.log("copyChildNode");
             console.log(copyChildNode);
 
-
             if (this.isFilterMatched(copyChildNode, paramsWithoutNode)) {
               matched = true;
               // console.log("***************************************");
               // console.log(node);
               // console.log(copyChildNode);
 
-               node.children.push(copyChildNode)
+              node.children.push(copyChildNode);
               //  console.log("pushed node")
               // console.log(node.children);
               //  node = node.children[0]
@@ -298,20 +300,20 @@ export default {
 
               //  node.label=copyChildNode['label'];
               //  node.children = [];
-               //we need to push the right children
-               
+              //we need to push the right children
+
               //  console.log("after");
 
               //  console.log(node.children)
 
               // console.log(copyChildNode['label']);
 
-//////////////////////////////////////////////////////////////////////// NADA //////////////////////////////////////////////////////////////////////
+              //////////////////////////////////////////////////////////////////////// NADA //////////////////////////////////////////////////////////////////////
             }
           }
         }
 
-        if (matched) { 
+        if (matched) {
           return true;
         }
       }
@@ -339,6 +341,12 @@ export default {
     },
   },
   computed: {
+    dragOptions() {
+      return {
+        animation: 200,
+        ghostClass: "ghost",
+      };
+    },
     containerClass() {
       return [
         "p-tree p-component",
@@ -364,7 +372,6 @@ export default {
         let _node = { ...node };
         let paramsWithoutNode = { searchFields, filterText, strict };
 
-      
         if (
           (strict &&
             (this.findFilteredNodes(_node, paramsWithoutNode) ||
@@ -375,7 +382,6 @@ export default {
         ) {
           filteredNodes.push(_node);
           //console.log(filteredNodes[0].children)
-          
         }
       }
 
@@ -384,13 +390,12 @@ export default {
     valueToRender() {
       if (this.filterValue && this.filterValue.trim().length > 0)
         return this.filteredValue;
-      
       else return this.value;
     },
   },
   components: {
     TreeNode: TreeNode,
-    draggable
+    draggable,
   },
 };
 </script>
