@@ -72,7 +72,11 @@
       >
         <i class="pi pi-trash"></i>
       </button>
-      <button @click="disable(node)" class="px-2 bg-transparent border-0" v-show="showDisabledButton">
+      <button
+        @click="disable(node)"
+        class="px-2 bg-transparent border-0"
+        v-show="showDisabledButton"
+      >
         <i class="pi pi-power-off"></i>
       </button>
       <b-button
@@ -88,9 +92,17 @@
       class="p-treenode-children"
       role="group"
     >
-      <draggable :list="node.children" group="documents" item-key="key" handle=".draggable" :disabled="node.status !== 'enabled'">
+      <draggable
+        :list="node.children"
+        group="documents"
+        item-key="key"
+        handle=".draggable"
+        :disabled="node.status !== 'enabled'"
+        v-bind="dragOptions"
+      >
         <template #item="{ element }">
           <TreeNode
+            :dragOptions="dragOptions"
             :nodeParent="node || false"
             :key="element.key"
             :node="element"
@@ -119,9 +131,13 @@ export default {
   name: "TreeNode",
   emits: ["node-toggle", "node-click", "checkbox-change"],
   props: {
-    nodeParent : {
+    dragOptions: {
+      type: Object,
+      required: true,
+    },
+    nodeParent: {
       type: null,
-      default: null,
+      required: true,
     },
     node: {
       type: null,
@@ -213,7 +229,6 @@ export default {
         console.log(node.key.length);
         this.recursiveDisable(node.children);
       }
-     
     },
 
     toggle() {
@@ -249,7 +264,6 @@ export default {
         this.recursiveDisable(this.node.children);
         let catchedDiv = document.getElementById(event.target.id);
         catchedDiv.classList.add("disable-Node");
-
       }
     },
     onChildNodeClick(event) {
@@ -567,7 +581,10 @@ export default {
   },
   computed: {
     showDisabledButton() {
-      return (this.nodeParent && this.nodeParent.status == 'enabled') || !this.nodeParent
+      return (
+        (this.nodeParent && this.nodeParent.status == "enabled") ||
+        !this.nodeParent
+      );
     },
     hasChildren() {
       return this.node.children && this.node.children.length > 0;
