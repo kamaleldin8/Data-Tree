@@ -62,7 +62,7 @@
         "description":"description node 2-1",
 
         "children": [
-          { "key": "2-1-0", "label": "Goodfellas", "status": "enabled", "description":"description node 2-1-0" },
+          { "key": "2-1-0", "label": "Goodfellas", "status": "disabled", "description":"description node 2-1-0" },
           { "key": "2-1-1", "label": "Untouchables", "status": "enabled" , "description":"description node 2-1-1"}
         ]
       }

@@ -47,8 +47,10 @@ export default {
       <div class="card">
         <h2>Tree</h2>
 
-        <div>
+        <div class="flex justify-content-center p-3 ">
           <Button
+          class="transition-colors transition-duration-500 bg-blue-500 hover:bg-gray-200 text-white hover:text-gray-900
+    flex align-items-center justify-content-center border-none font-bold border-round cursor-pointer m-2 w-2 py-3"
             type="button"
             icon="pi pi-plus"
             label="Expand All"
@@ -56,6 +58,8 @@ export default {
             >expand All</Button
           >
           <Button
+          class="transition-colors transition-duration-500 bg-blue-500 hover:bg-gray-200 text-white hover:text-gray-900
+    flex align-items-center justify-content-center border-none font-bold border-round cursor-pointer m-2 w-2 py-3"
             type="button"
             icon="pi pi-minus"
             label="Collapse All"
