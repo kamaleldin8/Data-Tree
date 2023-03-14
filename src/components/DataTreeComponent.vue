@@ -47,11 +47,10 @@ export default {
         <div class="flex flex-wrap gap-2 mb-4 justify-content-center">
           <Button
           class="transition-colors transition-duration-500 bg-blue-500 hover:bg-gray-200 text-white hover:text-gray-900
-    flex align-items-center justify-content-center border-none font-bold border-round cursor-pointer m-2 w-2 py-3"
+    flex align-items-center justify-content-center border-none font-bold border-round cursor-pointer m-2 w-2 py-3 p-button p-component"
             type="button"
             icon="pi pi-plus"
             label="Expand All"
-            class="p-button p-component"
             @click="expandAll"
             >
             <span class="pi pi-plus p-button-icon p-button-icon-left"></span>
@@ -60,11 +59,10 @@ export default {
           >
           <Button
           class="transition-colors transition-duration-500 bg-blue-500 hover:bg-gray-200 text-white hover:text-gray-900
-    flex align-items-center justify-content-center border-none font-bold border-round cursor-pointer m-2 w-2 py-3"
+    flex align-items-center justify-content-center border-none font-bold border-round cursor-pointer m-2 w-2 py-3 p-button p-componen"
             type="button"
             icon="pi pi-minus"
             label="Collapse All"
-            class="p-button p-component"
             @click="collapseAll"
             ><span class="pi pi-minus p-button-icon p-button-icon-left"></span>
             <span class="p-button-label">Collapse All</span></Button
