@@ -72,7 +72,7 @@
       >
         <i class="pi pi-trash"></i>
       </button>
-      <button @click="disable(node)" class="px-2 bg-transparent border-0">
+      <button @click="disable(node)" class="px-2 bg-transparent border-0" v-show="showDisabledButton">
         <i class="pi pi-power-off"></i>
       </button>
       <b-button
@@ -91,6 +91,7 @@
       <draggable :list="node.children" group="documents" item-key="key" handle=".draggable" :disabled="node.status !== 'enabled'">
         <template #item="{ element }">
           <TreeNode
+            :nodeParent="node || false"
             :key="element.key"
             :node="element"
             :templates="templates"
@@ -118,6 +119,10 @@ export default {
   name: "TreeNode",
   emits: ["node-toggle", "node-click", "checkbox-change"],
   props: {
+    nodeParent : {
+      type: null,
+      default: null,
+    },
     node: {
       type: null,
       default: null,
@@ -561,6 +566,9 @@ export default {
     },
   },
   computed: {
+    showDisabledButton() {
+      return (this.nodeParent && this.nodeParent.status == 'enabled') || !this.nodeParent
+    },
     hasChildren() {
       return this.node.children && this.node.children.length > 0;
     },

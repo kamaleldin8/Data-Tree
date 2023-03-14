@@ -27,6 +27,7 @@
         
         <template #item="{ element, index }">
           <TreeNode 
+          :nodeParent="false"
           :valuetorender="valueToRender"
           :key="element.key"
           :node="element"
