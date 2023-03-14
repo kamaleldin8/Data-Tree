@@ -88,7 +88,7 @@
       class="p-treenode-children"
       role="group"
     >
-    <draggable :list="node.children" group="people" item-key="key">
+      <draggable :list="node.children" group="people" item-key="key">
         <template #item="{ element }">
           <TreeNode
             :key="element.key"
@@ -113,7 +113,6 @@
 import Ripple from "primevue/ripple";
 import { DomHandler } from "primevue/utils";
 import draggable from "vuedraggable";
-
 
 export default {
   name: "TreeNode",
@@ -149,7 +148,7 @@ export default {
     },
   },
   components: {
-    draggable
+    draggable,
   },
   nodeTouched: false,
   data() {
@@ -182,39 +181,34 @@ export default {
       catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
       this.expansionIcon = !this.expansionIcon;
     },
-    
+    recursiveDisable(children) {
+      if (children.length > 0) {
+        for (let i = 0; i < children.length; i++) {
+          children[i].status = "disabled";
+     
+          this.recursiveDisable(children[i].children);
+        }
+      }
+    },
+    recursiveEnable(children) {
+      if (children.length > 0) {
+        for (let i = 0; i < children.length; i++) {
+          children[i].status = "enabled";
+     
+          this.recursiveEnable(children[i].children);
+        }
+      }
+    },
     disable(node) {
-   
       if (node.status === "disabled") {
-      node.status="enabled"
+        node.status = "enabled";
+        this.recursiveEnable(node.children)
       } else {
         node.status = "disabled";
         console.log(node.key.length);
-        // if (node.key.length === 1) {
-          for (let i = 0; i < node.children.length; i++) {
-           
-              for(let i = 0; i < node.children.length; i++){
-                for(let i = 0; i < node.children.length; i++){
-                node.children[i].status='disabled'
-              }              }
-            
-            // console.log("hello");
-            // node.children[i].status='disabled'
-          }
-          // node.children.status = "disabled";
-          // console.log(node.children);
-        // }
-
-      // lw howa parent=> disable children kolhom
+        this.recursiveDisable(node.children);
       }
-      // this.disabled = !this.disabled;
-      //         let selectednode = document.getElementById(id);
-
-      // this.flagColor
-      //   ? (selectednode.style.backgroundColor = "transparent")
-      //   : (selectednode.style.backgroundColor = "lightgrey");
-      // this.flagColor = !this.flagColor;
-      // selectednode.style.boxShadow = "inset 0 0 0 0.15rem transparent";
+     
     },
 
     toggle() {
@@ -247,12 +241,10 @@ export default {
         this.nodeTouched = false;
       }
       if (this.node.status === "disabled") {
+        this.recursiveDisable(this.node.children);
         let catchedDiv = document.getElementById(event.target.id);
         catchedDiv.classList.add("disable-Node");
-        // console.log("else");
-        // console.log(event.target.id);
-        // console.log(catchedDiv);
-        // catchedDiv.style.boxShadow = "inset 0 0 0 0.15rem transparent";
+
       }
     },
     onChildNodeClick(event) {
@@ -613,7 +605,7 @@ export default {
     toggleIcon() {
       return [
         "p-tree-toggler-icon pi pi-fw",
-        this.expanded 
+        this.expanded
           ? this.node.expandedIcon || "pi-chevron-down"
           : this.node.collapsedIcon || "pi-chevron-right",
       ];
