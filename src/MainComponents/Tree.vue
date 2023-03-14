@@ -23,7 +23,7 @@
         :aria-labelledby="ariaLabelledby"
         :aria-label="ariaLabel"
       >
-      <draggable :list="valueToRender" group="documents" item-key="key">
+      <draggable :list="valueToRender" group="documents" item-key="key" handle=".draggable">
         
         <template #item="{ element, index }">
           <TreeNode 
