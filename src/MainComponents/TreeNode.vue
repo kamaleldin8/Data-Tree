@@ -1,7 +1,7 @@
 <template>
   <li
     ref="currentNode"
-    :class="containerClass"
+    :class="[containerClass, node.status === 'disabled' ? '' : 'draggable']"
     role="treeitem"
     :aria-label="label(node)"
     :aria-selected="ariaSelected"
@@ -88,7 +88,7 @@
       class="p-treenode-children"
       role="group"
     >
-      <draggable :list="node.children" group="people" item-key="key">
+      <draggable :list="node.children" group="documents" item-key="key" handle=".draggable" :disabled="node.status !== 'enabled'">
         <template #item="{ element }">
           <TreeNode
             :key="element.key"
