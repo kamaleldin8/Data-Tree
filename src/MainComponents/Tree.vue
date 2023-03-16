@@ -139,6 +139,7 @@ export default {
     return {
       d_expandedKeys: this.expandedKeys || {},
       filterValue: null,
+      found_in_recursive : [],
     };
   },
   watch: {
@@ -269,54 +270,49 @@ export default {
     findFilteredNodes(node, paramsWithoutNode) {
       if (node) {
         let matched = false;
-        // console.log("llllllllllllllllllllllllll");
-        // console.log(node);
-
         if (node.children) {
           let childNodes = [...node.children];
-          console.log(node.children);
           node.children = [];
 
           for (let childNode of childNodes) {
+
             let copyChildNode = { ...childNode };
-            console.log("childNode");
-            console.log(childNode);
-            console.log("copyChildNode");
-            console.log(copyChildNode);
 
             if (this.isFilterMatched(copyChildNode, paramsWithoutNode)) {
               matched = true;
-              // console.log("***************************************");
-              // console.log(node);
-              // console.log(copyChildNode);
-
+              copyChildNode.children = this.findNodeChildren(copyChildNode, this.value);
               node.children.push(copyChildNode);
-              //  console.log("pushed node")
-              // console.log(node.children);
-              //  node = node.children[0]
-              //  node.children = [];
-              //   console.log("before");
-              // console.log(node.children)
-
-              //  node.label=copyChildNode['label'];
-              //  node.children = [];
-              //we need to push the right children
-
-              //  console.log("after");
-
-              //  console.log(node.children)
-
-              // console.log(copyChildNode['label']);
-
-              //////////////////////////////////////////////////////////////////////// NADA //////////////////////////////////////////////////////////////////////
-            }
+              this.$emit("expandNode", node);
+               }
           }
         }
-
         if (matched) {
           return true;
         }
       }
+    },
+
+    findNodeChildren(node_sent, nodes){
+      let flag=false;
+      for (let node of nodes) {
+        let _node = { ...node };
+        if(node_sent['key'] === _node['key']){
+          flag = true;
+          if(_node['children'].length>0){
+            this.found_in_recursive = _node['children'];
+          }else {
+            this.found_in_recursive = [];
+          }
+          break;
+        }else if(node_sent['key'] !== _node['key'] && _node['children'].length>0) {
+          if(flag === true){
+            break;
+          }else {
+            this.findNodeChildren(node_sent, _node['children']);
+          }
+        }
+      }
+      return this.found_in_recursive;
     },
     isFilterMatched(node, { searchFields, filterText, strict }) {
       let matched = false;
@@ -330,13 +326,11 @@ export default {
           matched = true;
         }
       }
-
       if (!matched || (strict && !this.isNodeLeaf(node))) {
         matched =
           this.findFilteredNodes(node, { searchFields, filterText, strict }) ||
           matched;
       }
-
       return matched;
     },
   },
@@ -372,25 +366,23 @@ export default {
         let _node = { ...node };
         let paramsWithoutNode = { searchFields, filterText, strict };
 
-        if (
-          (strict &&
-            (this.findFilteredNodes(_node, paramsWithoutNode) ||
-              this.isFilterMatched(_node, paramsWithoutNode))) ||
-          (!strict &&
-            (this.isFilterMatched(_node, paramsWithoutNode) ||
-              this.findFilteredNodes(_node, paramsWithoutNode)))
-        ) {
+        if (strict && (this.findFilteredNodes(_node, paramsWithoutNode))){
           filteredNodes.push(_node);
-          //console.log(filteredNodes[0].children)
+        }
+        else if(strict && this.isFilterMatched(_node, paramsWithoutNode)){
+          _node.children = this.findNodeChildren(_node, this.value);
+          filteredNodes.push(_node);
         }
       }
-
       return filteredNodes;
     },
     valueToRender() {
       if (this.filterValue && this.filterValue.trim().length > 0)
         return this.filteredValue;
-      else return this.value;
+      else{
+        this.$emit("collapseAll");
+        return this.value;
+      }
     },
   },
   components: {

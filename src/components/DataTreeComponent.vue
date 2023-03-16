@@ -77,6 +77,8 @@ export default {
           scrollHeight="200px"
           :filter="true"
           filterMode="strict"
+          @expandNode="expandNode"
+          @collapseAll="collapseAll"
         >
         </Tree>
       </div>
